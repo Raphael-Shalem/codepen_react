@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Editor         from "./EditorUnit"
+import Editor         from "./editorUnit"
 import { makeStyles } from 'makeStyles'; 
 import useScreenSize from "hooks/useScreenSize";
+import { TeditorVariant } from "types";
 
 const useStyles = makeStyles ()(() => ({
     root: {
@@ -10,6 +11,7 @@ const useStyles = makeStyles ()(() => ({
     }
 }))
 
+const textEditorsArray: TeditorVariant[] = ['html', 'css', 'js'];
 
 const TextEditorsContainer = () => {
 
@@ -28,7 +30,7 @@ const TextEditorsContainer = () => {
          style = {{ height: height }}
       >
          {
-          ['html', 'css', 'js'].map((val) => {
+          textEditorsArray.map((val) => {
             return(
               <Editor
                  key     = { val }

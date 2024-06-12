@@ -1,5 +1,6 @@
 import TextEditors from 'app/textEditors'
 import ResultDisplay from 'app/resultDisplay'
+import { SandBoxStoreProvider } from 'context/sandBoxStore';
 import { makeStyles } from 'makeStyles'; 
 
 const useStyles = makeStyles ()(() => ({
@@ -22,10 +23,13 @@ function App() {
   const { classes } = useStyles();
 
   return (
-    <div className = { classes.root }>
-       <TextEditors/>
-       <ResultDisplay/>
-    </div>
+    <SandBoxStoreProvider>
+      <div className = { classes.root }>
+        <TextEditors/>
+        <ResultDisplay/>
+      </div>
+    </SandBoxStoreProvider>
+
   )
 }
 
