@@ -1,4 +1,8 @@
+import { useSandBoxStore } from 'context/sandBoxStore';
 import { makeStyles } from 'makeStyles'; 
+import { action, toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { TeditorVariant } from 'types';
 
 const useStyles = makeStyles ()(() => ({
     root: {
@@ -23,23 +27,33 @@ const useStyles = makeStyles ()(() => ({
 }))
 
 interface IEditorProps {
-  variant: string
+  variant: TeditorVariant
 }
   
 
 const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
 
     const { classes } = useStyles();
+    const { code, updateSandBox } = useSandBoxStore()
+    const codeObject = toJS(code);
+
+
+    const handleChange = action((userInput: string) => {
+      const userInputObject = Object.fromEntries([[`${ variant }`, userInput]])
+      updateSandBox(userInputObject);
+    })
 
     return (
       <div className = { classes.root } >
           <h1 className={ classes.headLine }>{ variant }</h1>
           <textarea
-            className={classes.textarea}
+            className = { classes.textarea }
+            value     = { `${ codeObject[`${ variant }`] }` }
+            onChange  = { (e) => handleChange(e.target.value) }
           />
       </div>
     )
   }
   
-  export default TextEditor
+  export default observer(TextEditor)
   

@@ -1,5 +1,9 @@
 
+import { useSandBoxStore } from 'context/sandBoxStore';
 import { makeStyles } from 'makeStyles'; 
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { useMemo } from 'react';
   
   
   const useStyles = makeStyles ()(() => ({
@@ -24,24 +28,23 @@ import { makeStyles } from 'makeStyles';
   const ResultDisplay: React.FC<IResultDisplayProps> = () => {
 
     const { classes } = useStyles();
-  
-    let html = `<html>
-    <head>
-      <meta charset="UTF-8" />
-      <title>Hello World</title>
-    </head>
-    <body>
-      <style>
-        p {
-          color: red;
-        }
-      </style>
-      <p id="demo">hello</p>
-      <script>
-         document.getElementById("demo").innerHTML = "hi";
-      </script>
-    </body>
-  </html>`
+    const { code } = useSandBoxStore();
+    const codeObject = toJS(code);
+
+    const srcDoc = useMemo(() => {
+
+      return`<html>
+              <body>
+                <style>
+                  ${ codeObject.css }
+                </style>
+                  ${ codeObject.html }
+                <script>
+                  ${ codeObject.js }
+                </script>
+              </body>
+            </html>`
+    },[codeObject])
       
   
     return (
@@ -50,9 +53,9 @@ import { makeStyles } from 'makeStyles';
             title           = 'codePenCopy'
             width           = '100%'
             height          = '100%'
-            srcDoc          ={ html }
-            allowFullScreen
+            srcDoc          = { srcDoc }
             sandbox         = 'allow-scripts'
+            allowFullScreen
         />
       </div>
   
@@ -60,6 +63,31 @@ import { makeStyles } from 'makeStyles';
   }
   
   
-  
-  export default ResultDisplay
+  export default observer(ResultDisplay)
+
+
+
+
+
+
+
+
+
+    //   let html = `<html>
+  //   <head>
+  //     <meta charset="UTF-8" />
+  //     <title>Hello World</title>
+  //   </head>
+  //   <body>
+  //     <style>
+  //       p {
+  //         color: red;
+  //       }
+  //     </style>
+  //     <p id="demo">hello</p>
+  //     <script>
+  //        document.getElementById("demo").innerHTML = "hi";
+  //     </script>
+  //   </body>
+  // </html>`
   
