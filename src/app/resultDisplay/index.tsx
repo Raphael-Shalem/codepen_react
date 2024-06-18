@@ -1,5 +1,6 @@
 
-import { useSandBoxStore } from 'context/sandBoxStore';
+//import { useSandBoxStore } from 'context/sandBoxStore';
+import { useStore } from 'context/rootStore';
 import { makeStyles } from 'makeStyles'; 
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -13,7 +14,6 @@ import { useMemo } from 'react';
         flex:            1,
         alignItems:      'center',
         justifyContent:  'center',
-        border: '1px dashed #000'
       },
       iframe: {
           flex:  1,
@@ -28,7 +28,7 @@ import { useMemo } from 'react';
   const ResultDisplay: React.FC<IResultDisplayProps> = () => {
 
     const { classes } = useStyles();
-    const { code } = useSandBoxStore();
+    const { code } = useStore().sandBoxStore;
     const codeObject = toJS(code);
 
     const srcDoc = useMemo(() => {
@@ -55,7 +55,7 @@ import { useMemo } from 'react';
             height          = '100%'
             srcDoc          = { srcDoc }
             sandbox         = 'allow-scripts'
-            allowFullScreen
+            allowFullScreen = { false }
         />
       </div>
   
