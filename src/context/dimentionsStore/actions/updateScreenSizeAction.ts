@@ -1,4 +1,4 @@
-import { minEditorWidth } from "constants";
+import { minEditorWidth } from "myConstants";
 import { Idimentions } from "types";
 
 

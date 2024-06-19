@@ -5,7 +5,7 @@ import { makeStyles } from 'makeStyles';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { useMemo } from 'react';
-  
+
   
   const useStyles = makeStyles ()(() => ({
       root: {
@@ -28,11 +28,11 @@ import { useMemo } from 'react';
   const ResultDisplay: React.FC<IResultDisplayProps> = () => {
 
     const { classes } = useStyles();
-    const { code } = useStore().sandBoxStore;
-    const codeObject = toJS(code);
+    const { sandBoxCode } = useStore().sandBoxStore;
+    const codeObject = toJS(sandBoxCode);
+
 
     const srcDoc = useMemo(() => {
-
       return`<html>
               <body>
                 <style>

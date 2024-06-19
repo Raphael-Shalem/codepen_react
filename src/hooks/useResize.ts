@@ -1,4 +1,4 @@
-import { minEditorWidth } from "constants";
+import { minEditorWidth } from "myConstants";
 import { useStore } from "context/rootStore";
 import { action } from "mobx";
 import { RefObject, useCallback } from "react";
