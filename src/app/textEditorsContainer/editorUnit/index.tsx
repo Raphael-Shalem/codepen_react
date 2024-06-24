@@ -21,7 +21,14 @@ const useStyles = makeStyles ()((theme) => ({
       flexFlow: 'column',
       minWidth: 0
     },
-    resizeEl: {
+    border: {
+      height:     '100%',
+      width:      minEditorWidth, 
+      minWidth:   minEditorWidth, 
+      background: theme.black,
+      border:     '1px solid #334'
+    },
+    resizeBorder: {
       cursor:     "col-resize",
       height:     '100%',
       width:      minEditorWidth, 
@@ -54,14 +61,14 @@ const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
       >
         {
           variant === 'html' &&
-          <div className = { classes.resizeEl }/>
+          <div className = { classes.border }/>
         }
         <div className = { classes.container } >
             <TitleComponent variant = { variant }/>
             <HighLightedCode variant = { variant }/>
         </div>
         <div 
-            className = { classes.resizeEl }
+            className = { variant === 'js' ? classes.border : classes.resizeBorder }
             onMouseDown = { handleMouseDown }
         />
       </div>

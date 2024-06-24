@@ -16,8 +16,7 @@ import { useMemo } from 'react';
         justifyContent:  'center',
       },
       iframe: {
-          flex:  1,
-          width: '100%',
+         border: '0px'
       }
      
   }))
@@ -50,6 +49,7 @@ import { useMemo } from 'react';
     return (
       <div className={ classes.root } >
         <iframe
+            className       = { classes.iframe }  
             title           = 'codePenCopy'
             width           = '100%'
             height          = '100%'

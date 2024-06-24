@@ -21,7 +21,8 @@ const useStyles = makeStyles ()((theme) => ({
     pre: {
       textAlign: 'left',
       margin: 0,    
-      padding: 0,
+      paddingLeft: 8,
+      paddingTop: 8,
       border: "none",
       whiteSpace: "pre-wrap",
       overflowWrap: "break-word",
@@ -85,6 +86,7 @@ const HighLightedCode: React.FC<IHighLightedCodeProps> = ({ variant }) => {
         dangerouslySetInnerHTML={{ __html: innerHtml }}
         contentEditable="true"
         onInput = { handleChange }
+        spellCheck="false"
       />
     </pre>
   );

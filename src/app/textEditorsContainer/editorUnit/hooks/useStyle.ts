@@ -18,7 +18,7 @@ const useStyle = (dimentionsObject: Idimentions, variant: TeditorWidthVariant) =
                 fontSize: minimize ? 14 : 26,
                 fontFamily: 'Archivo Black',
                 height: minimize ? minEditorWidth : maxTitleHeight,
-                transform: minimize ? `rotate(90deg) translate(55px, 67px)` : undefined,
+                transform: minimize ? `rotate(90deg) translate(55px, 68px)` : undefined,
                 backgroundColor: minimize ? 'transparent' : theme.darkGrey,
             },
             icon: {
