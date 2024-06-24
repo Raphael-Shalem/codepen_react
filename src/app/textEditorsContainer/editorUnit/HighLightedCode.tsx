@@ -8,19 +8,47 @@ import css from 'highlight.js/lib/languages/css';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/atom-one-dark.css';
 import { TeditorVariant } from 'types';
+import { getCaretCharacterOffsetWithin } from './functions/getCaretCharacterOffsetWithin';
+import { setCaretPosition } from './functions/setCaretPosition';
+import { makeStyles } from 'makeStyles'; 
 
 hljs.registerLanguage('html', xml);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('js', javascript);
+
+
+const useStyles = makeStyles ()((theme) => ({
+    pre: {
+      textAlign: 'left',
+      margin: 0,    
+      padding: 0,
+      border: "none",
+      whiteSpace: "pre-wrap",
+      overflowWrap: "break-word",
+      boxSizing: "border-box",
+      height: '100%',
+      width: '100%',
+      color: '#FFF',
+      overflowY: 'scroll',
+      backgroundColor: theme.darkGrey,
+      cursor: "text"
+    },
+    code: {
+      outline: 'none'
+    }
+}))
+
 
 interface IHighLightedCodeProps {
   variant: TeditorVariant;
 }
 
 const HighLightedCode: React.FC<IHighLightedCodeProps> = ({ variant }) => {
+
+  const { classes } = useStyles(); 
   const { sandBoxCode, updateSandBox } = useStore().sandBoxStore;
   const codeObject = toJS(sandBoxCode);
-  const testRef = useRef<HTMLPreElement | null>(null);
+  const textRef = useRef<HTMLPreElement | null>(null);
   const [innerHtml, setInnerHtml] = useState<string>('');
 
   useEffect(() => {
@@ -28,57 +56,10 @@ const HighLightedCode: React.FC<IHighLightedCodeProps> = ({ variant }) => {
     setInnerHtml(highlightedJS);
   }, [codeObject, variant]);
 
-  const getCaretCharacterOffsetWithin = (element: HTMLElement): number => {
-    let caretOffset = 0;
-    const doc = element.ownerDocument;
-    const win = doc.defaultView || (doc as any).parentWindow;
-    const sel = win.getSelection();
-    if (sel && sel.rangeCount > 0) {
-      const range = sel.getRangeAt(0);
-      const preCaretRange = range.cloneRange();
-      preCaretRange.selectNodeContents(element);
-      preCaretRange.setEnd(range.endContainer, range.endOffset);
-      caretOffset = preCaretRange.toString().length;
-    }
-    return caretOffset;
-  };
-
-  const setCaretPosition = (element: HTMLElement, offset: number) => {
-    const doc = element.ownerDocument;
-    const win = doc.defaultView || (doc as any).parentWindow;
-    const range = doc.createRange();
-    const sel = win.getSelection();
-
-    let charCount = 0;
-
-    const traverseNodes = (node: Node): boolean => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const textLength = node.textContent?.length || 0;
-        if (charCount + textLength >= offset) {
-          range.setStart(node, offset - charCount);
-          range.collapse(true);
-          sel?.removeAllRanges();
-          sel?.addRange(range);
-          return true;
-        }
-        charCount += textLength;
-      } else {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          if (traverseNodes(node.childNodes[i])) {
-            return true;
-          }
-        }
-      }
-      return false;
-    };
-
-    traverseNodes(element);
-  };
-
   const handleChange = action(() => {
-    if (testRef.current) {
-      const caretPosition = getCaretCharacterOffsetWithin(testRef.current);
-      const myText = testRef.current.textContent || '';
+    if (textRef.current) {
+      const caretPosition = getCaretCharacterOffsetWithin(textRef.current);
+      const myText = textRef.current.textContent || '';
       const userInputObject = { [variant]: myText };
       updateSandBox(userInputObject);
 
@@ -87,20 +68,23 @@ const HighLightedCode: React.FC<IHighLightedCodeProps> = ({ variant }) => {
       setInnerHtml(newHighlightedJS);
 
       setTimeout(() => {
-        if (testRef.current) {
-          setCaretPosition(testRef.current, caretPosition);
+        if (textRef.current) {
+          setCaretPosition(textRef.current, caretPosition);
         }
       }, 0);
     }
   });
 
   return (
-    <pre ref={testRef}>
+    <pre 
+      className={ classes.pre }
+      ref = { textRef } 
+    >
       <code
-        style={{ outline: 'none' }}
+        className={ classes.code }
         dangerouslySetInnerHTML={{ __html: innerHtml }}
         contentEditable="true"
-        onInput={handleChange}
+        onInput = { handleChange }
       />
     </pre>
   );
