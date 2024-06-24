@@ -72,7 +72,6 @@ const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
     const resizableRef = useRef<HTMLDivElement>(null);
     const handleMouseDown = useResize(resizableRef, variant)
 
-
     return (
       <div 
          className = { classes.root } 
@@ -96,11 +95,10 @@ const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
             <div className = { classes.textareaLabel }>
               <HighLightedCode variant = { variant }/>
             </div>
-            <textarea
-              id        = {`${ variant }`}
+            {/* <textarea
               value     = { `${ codeObject[`${ variant }`] }` }
               onChange  = { (e) => handleChange(e.target.value) }
-            />
+            /> */}
         </div>
         <div 
             className = { classes.resizeEl }
