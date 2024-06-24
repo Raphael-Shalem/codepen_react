@@ -1,14 +1,16 @@
 import { useStore } from 'context/rootStore';
+import HighLightedCode from './HighLightedCode';
 import { makeStyles } from 'makeStyles'; 
-import { action, toJS } from 'mobx';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { TeditorVariant } from 'types';
 import { useRef } from 'react';
-import { minEditorWidth } from 'constants';
+import { minEditorWidth } from 'myConstants';
 import useResize from 'hooks/useResize';
+import useStyle from './hooks/useStyle';
+import TitleComponent from './TitleComponent';
 
-
-const useStyles = makeStyles ()(() => ({
+const useStyles = makeStyles ()((theme) => ({
     root: {
       display: 'flex',
       flexFlow: 'row',
@@ -19,25 +21,20 @@ const useStyles = makeStyles ()(() => ({
       flexFlow: 'column',
       minWidth: 0
     },
-    headLine: {
-      fontSize: 26,
-      height: 30,
-      margin: 0,
-      textAlign: 'left'
+    border: {
+      height:     '100%',
+      width:      minEditorWidth, 
+      minWidth:   minEditorWidth, 
+      background: theme.black,
+      border:     '1px solid #334'
     },
-    textarea: {
-      borderTop: 'none',
-      marginTop: 0,
-      height: '100%',
-      resize: 'none',
-      outline: 0
-    },
-    resizeEl: {
+    resizeBorder: {
       cursor:     "col-resize",
       height:     '100%',
       width:      minEditorWidth, 
       minWidth:   minEditorWidth, 
-      background: '#CCC'
+      background: theme.black,
+      border:     '1px solid #334'
     }
 }))
 
@@ -49,45 +46,30 @@ interface IEditorProps {
 const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
 
     const { classes } = useStyles();
-    const { code, updateSandBox } = useStore().sandBoxStore
     const { dimentions } = useStore().dimentsionsStore
-
-    const codeObject = toJS(code);
     const dimentionsObject = toJS(dimentions);
-    
-    
-    const handleChange = action((userInput: string) => {
-      const userInputObject = Object.fromEntries([[`${ variant }`, userInput]])
-      updateSandBox(userInputObject);
-    })
 
     const resizableRef = useRef<HTMLDivElement>(null);
     const handleMouseDown = useResize(resizableRef, variant)
+    const style = useStyle(dimentionsObject, `${ variant }Width`)
 
     return (
       <div 
          className = { classes.root } 
          ref       = { resizableRef } 
-         style     = {{ 
-          maxWidth: `${dimentionsObject[`${ variant }Width`]}px`, 
-          minWidth: `${dimentionsObject[`${ variant }Width`]}px` 
-        }}
+         style     = { style.root }
       >
         {
           variant === 'html' &&
-          <div className = { classes.resizeEl }/>
+          <div className = { classes.border }/>
         }
         <div className = { classes.container } >
-            <h1 className={ classes.headLine }>{ variant }</h1>
-            <textarea
-              className = { classes.textarea }
-              value     = { `${ codeObject[`${ variant }`] }` }
-              onChange  = { (e) => handleChange(e.target.value) }
-            />
+            <TitleComponent variant = { variant }/>
+            <HighLightedCode variant = { variant }/>
         </div>
         <div 
-            className = { classes.resizeEl }
-            onMouseDown = { () => { handleMouseDown() }}
+            className = { variant === 'js' ? classes.border : classes.resizeBorder }
+            onMouseDown = { handleMouseDown }
         />
       </div>
     )

@@ -1,18 +1,18 @@
 import { makeAutoObservable } from 'mobx';
-import { Icode } from 'types';
+import { ISandBoxCode } from 'types';
 import { initialState } from './initialState';
 
 
 export default class SandBoxStore {
 
-    code: Icode = initialState;
+    sandBoxCode: ISandBoxCode = initialState;
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    updateSandBox = (input: Partial<Icode>) => {
-          Object.assign(this.code, input)
+    updateSandBox = (input: Partial<ISandBoxCode>) => {
+          Object.assign(this.sandBoxCode, input)
     };
 
 }

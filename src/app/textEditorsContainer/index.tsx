@@ -2,18 +2,17 @@ import Editor         from "./editorUnit"
 import { makeStyles } from 'makeStyles'; 
 import useScreenSize from "hooks/useScreenSize";
 import { TeditorVariant } from "types";
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useStore } from "context/rootStore";
-import useResize from "hooks/useResize";
-import { minEditorWidth } from "constants";
-import { toJS } from "mobx";
+import { minEditorWidth } from "myConstants";
 import { observer } from "mobx-react";
 
-const useStyles = makeStyles ()(() => ({
+const useStyles = makeStyles ()((theme) => ({
     root: {
       width:    '100vw',
       display:  'flex',
       flexFlow: 'column',
+      background: theme.black
     },
     editorContainer: {
       flex:     1,

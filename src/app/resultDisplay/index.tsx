@@ -5,7 +5,7 @@ import { makeStyles } from 'makeStyles';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { useMemo } from 'react';
-  
+
   
   const useStyles = makeStyles ()(() => ({
       root: {
@@ -16,8 +16,7 @@ import { useMemo } from 'react';
         justifyContent:  'center',
       },
       iframe: {
-          flex:  1,
-          width: '100%'
+         border: '0px'
       }
      
   }))
@@ -28,11 +27,11 @@ import { useMemo } from 'react';
   const ResultDisplay: React.FC<IResultDisplayProps> = () => {
 
     const { classes } = useStyles();
-    const { code } = useStore().sandBoxStore;
-    const codeObject = toJS(code);
+    const { sandBoxCode } = useStore().sandBoxStore;
+    const codeObject = toJS(sandBoxCode);
+
 
     const srcDoc = useMemo(() => {
-
       return`<html>
               <body>
                 <style>
@@ -50,6 +49,7 @@ import { useMemo } from 'react';
     return (
       <div className={ classes.root } >
         <iframe
+            className       = { classes.iframe }  
             title           = 'codePenCopy'
             width           = '100%'
             height          = '100%'
