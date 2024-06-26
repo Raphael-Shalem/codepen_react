@@ -1,10 +1,10 @@
 import { minEditorWidth } from "myConstants";
-import { Idimentions } from "types";
+import { IeditorDimentions } from "types";
 
 
-export const updateDimentionsAction = (dimentions: Idimentions, variant: string, newWidth: number) => {
+export const updateDimentionsAction = (editorDimentions: IeditorDimentions, variant: string, newWidth: number) => {
 
-    const { htmlWidth, cssWidth } = dimentions;
+    const { htmlWidth, cssWidth } = editorDimentions;
 
     if (variant === 'html') {
 
@@ -21,25 +21,29 @@ export const updateDimentionsAction = (dimentions: Idimentions, variant: string,
             newWidthCss = cssWidth + (htmlWidth - minEditorWidth*2)
         }
 
-        dimentions.htmlWidth = newWidthHtml;
-        dimentions.cssWidth = newWidthCss;
-        dimentions.jsWidth = newWidthJs;
+        editorDimentions.htmlWidth = newWidthHtml;
+        editorDimentions.cssWidth = newWidthCss;
+        editorDimentions.jsWidth = newWidthJs;
        
     }
     
     if (variant === 'css') {
+
         const newWidthHtml = Math.max(minEditorWidth*2, htmlWidth + newWidth);
         const newWidthCss  = Math.max(minEditorWidth, newWidth - minEditorWidth)
         let   newWidthJs   = Math.max(minEditorWidth, window.innerWidth - htmlWidth - newWidthCss)
 
-        
         if (newWidth <= 0) {
             newWidthJs = window.innerWidth - newWidthHtml - newWidthCss
-            dimentions.htmlWidth = newWidthHtml;
+            editorDimentions.htmlWidth = newWidthHtml;
         }
 
-        dimentions.cssWidth = newWidthCss
-        dimentions.jsWidth = newWidthJs;
+        if ( newWidthCss + htmlWidth + newWidthJs > window.innerWidth) {
+            return
+        }
+
+        editorDimentions.cssWidth = newWidthCss
+        editorDimentions.jsWidth = newWidthJs;
     }
     
 };

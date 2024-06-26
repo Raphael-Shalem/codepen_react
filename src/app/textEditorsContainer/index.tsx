@@ -1,11 +1,9 @@
 import Editor         from "./editorUnit"
 import { makeStyles } from 'makeStyles'; 
 import useScreenSize from "hooks/useScreenSize";
-import { TeditorVariant } from "types";
-import { useEffect } from "react";
-import { useStore } from "context/rootStore";
 import { minEditorWidth } from "myConstants";
 import { observer } from "mobx-react";
+import { useStore } from "context/rootStore";
 
 const useStyles = makeStyles ()((theme) => ({
     root: {
@@ -28,28 +26,21 @@ const useStyles = makeStyles ()((theme) => ({
     }
 }))
 
-const textEditorsArray: TeditorVariant[] = ['html', 'css', 'js'];
-
 
 const TextEditorsContainer = () => {
 
     const { classes } = useStyles();
     const screenSize = useScreenSize();
-    const { updateScreenSize } = useStore().dimentsionsStore
-
-    useEffect(() => {
-      updateScreenSize(screenSize.width)
-    },[screenSize.width])
-
+    const { editorDimentions } = useStore().dimentsionsStore
 
     return (
       <div 
           className = { classes.root }
-          style     = {{ height: screenSize.height/2 }}
+          style = {{ height: editorDimentions.showResult ? screenSize.height/2 : screenSize.height }}
       >
           <div className = { classes.editorContainer }>  
             {
-              textEditorsArray.map((val) => {
+              editorDimentions.textEditorsArray.map((val) => {
                 return(
                   <Editor
                     key     = { val }
