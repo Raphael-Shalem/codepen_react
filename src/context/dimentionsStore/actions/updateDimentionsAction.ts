@@ -12,13 +12,13 @@ export const updateDimentionsAction = (editorDimentions: IeditorDimentions, vari
         let newWidthCss  = Math.max(minEditorWidth,(cssWidth + htmlWidth - newWidth))
         let newWidthJs   = Math.max(minEditorWidth, window.innerWidth - newWidthHtml - newWidthCss)
 
-        if (newWidthHtml + newWidthCss + newWidthJs > window.innerWidth) {
-            return
-        }
-
         if ( newWidth <= minEditorWidth*2 ) {
             newWidthHtml = minEditorWidth*2;
             newWidthCss = cssWidth + (htmlWidth - minEditorWidth*2)
+        }
+
+        if (newWidthHtml > htmlWidth && (newWidthHtml + newWidthCss + newWidthJs - minEditorWidth > window.innerWidth)) {
+            return
         }
 
         editorDimentions.htmlWidth = newWidthHtml;
@@ -38,12 +38,13 @@ export const updateDimentionsAction = (editorDimentions: IeditorDimentions, vari
             editorDimentions.htmlWidth = newWidthHtml;
         }
 
-        if ( newWidthCss + htmlWidth + newWidthJs > window.innerWidth) {
-            return
-        }
+        editorDimentions.jsWidth = newWidthJs;
+
+         if ( newWidthCss + htmlWidth + newWidthJs > window.innerWidth) {
+             return
+         }
 
         editorDimentions.cssWidth = newWidthCss
-        editorDimentions.jsWidth = newWidthJs;
     }
     
 };

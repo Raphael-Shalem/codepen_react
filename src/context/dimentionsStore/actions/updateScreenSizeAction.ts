@@ -1,7 +1,6 @@
 import { editorVariants, minEditorWidth } from "myConstants";
 import { IeditorDimentions, IscreenSize } from "types";
 
-
 export const updateScreenSizeAction = (editorDimentions: IeditorDimentions, screenSize: IscreenSize) => {
 
     const newWidth = screenSize.width;
@@ -21,7 +20,6 @@ export const updateScreenSizeAction = (editorDimentions: IeditorDimentions, scre
         if ( newCssWidth === minEditorWidth ) {
             newHtmlWidth = newWidth - minEditorWidth;
         }
-
 
         if ( minimizeScreen && !smallScreen ) {
             editorDimentions.smallScreen = true
