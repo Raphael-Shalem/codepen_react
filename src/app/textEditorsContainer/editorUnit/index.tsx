@@ -9,6 +9,7 @@ import { minEditorWidth } from 'myConstants';
 import useResize from 'hooks/useResize';
 import useStyle from './hooks/useStyle';
 import TitleComponent from './TitleComponent';
+import Menu from './Menu';
 
 const useStyles = makeStyles ()((theme) => ({
     root: {
@@ -46,12 +47,14 @@ interface IEditorProps {
 const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
 
     const { classes } = useStyles();
-    const { dimentions } = useStore().dimentsionsStore
-    const dimentionsObject = toJS(dimentions);
+    const { editorDimentions } = useStore().dimentsionsStore
+    const editorDimentionsObject = toJS(editorDimentions);
 
     const resizableRef = useRef<HTMLDivElement>(null);
     const handleMouseDown = useResize(resizableRef, variant)
-    const style = useStyle(dimentionsObject, `${ variant }Width`)
+    const style = useStyle(editorDimentionsObject, `${ variant }Width`)
+
+    const showLeftBorder = (variant === 'html' || editorDimentionsObject.smallScreen);
 
     return (
       <div 
@@ -60,11 +63,13 @@ const TextEditor: React.FC<IEditorProps> = ({ variant }) => {
          style     = { style.root }
       >
         {
-          variant === 'html' &&
+          showLeftBorder &&
           <div className = { classes.border }/>
         }
         <div className = { classes.container } >
-            <TitleComponent variant = { variant }/>
+            {
+              editorDimentions.smallScreen ? <Menu/> : <TitleComponent variant = { variant }/>
+            }
             <HighLightedCode variant = { variant }/>
         </div>
         <div 

@@ -1,24 +1,26 @@
 import { maxTitleHeight, minEditorWidth } from "myConstants";
 import { theme } from "makeStyles";
 import { useMemo } from "react"
-import { Idimentions, TeditorWidthVariant } from "types"
+import { IeditorDimentions, TeditorWidthVariant } from "types"
 
-const useStyle = (dimentionsObject: Idimentions, variant: TeditorWidthVariant) => {
+const useStyle = (editorDimentionsObject: IeditorDimentions, variant: TeditorWidthVariant) => {
 
     const style = useMemo(() => {
 
-        const minimize = dimentionsObject[`${ variant }`] < 200;
+        const minimize = editorDimentionsObject[`${ variant }`] < 200;
+        const { smallScreen } = editorDimentionsObject
         
         return{
             root: {
-                maxWidth: `${dimentionsObject[variant]}px`, 
-                minWidth: `${dimentionsObject[variant]}px` 
+                maxWidth: smallScreen ? '100%' : `${editorDimentionsObject[variant]}px`, 
+                minWidth: smallScreen ? '100%' : `${editorDimentionsObject[variant]}px` 
             },
             title: {
                 fontSize: minimize ? 14 : 26,
+                width: minimize ? 70 : 140,
                 fontFamily: 'Archivo Black',
                 height: minimize ? minEditorWidth : maxTitleHeight,
-                transform: minimize ? `rotate(90deg) translate(55px, 68px)` : undefined,
+                transform: minimize ? `rotate(90deg) translate(30px, 44px)` : undefined,
                 backgroundColor: minimize ? 'transparent' : theme.darkGrey,
             },
             icon: {
@@ -26,7 +28,7 @@ const useStyle = (dimentionsObject: Idimentions, variant: TeditorWidthVariant) =
                 width: minimize ? 10 : 20,
             }
         }
-    },[dimentionsObject, variant])
+    },[editorDimentionsObject, variant])
 
     return style
 

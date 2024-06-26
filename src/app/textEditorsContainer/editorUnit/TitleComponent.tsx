@@ -33,7 +33,6 @@ const useStyles = makeStyles ()(() => ({
        alignItems: 'center',
        color: '#FFF',
        textAlign: 'left',
-       width: 120,
        transition: 'transform 0.3s, font 0.3s',
     },
     icon: {
@@ -50,10 +49,10 @@ interface IEditorProps {
 const TitleComponent: React.FC<IEditorProps> = ({ variant }) => {
 
     const { classes } = useStyles();
-    const { dimentions } = useStore().dimentsionsStore
-    const dimentionsObject = toJS(dimentions);
+    const { editorDimentions } = useStore().dimentsionsStore
+    const editorDimentionsObject = toJS(editorDimentions);
 
-    const style = useStyle(dimentionsObject, `${ variant }Width`)
+    const style = useStyle(editorDimentionsObject, `${ variant }Width`)
 
     return (
         <div className = { classes.titleContainer } >
@@ -71,7 +70,7 @@ const TitleComponent: React.FC<IEditorProps> = ({ variant }) => {
                     <path d={ `${ svgIcons[variant]['path'] }` }></path>
                 </svg>
               </span>
-              { variant }
+              { variant.toUpperCase() }
             </div>
         </div>
             

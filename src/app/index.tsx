@@ -1,6 +1,11 @@
 import TextEditors from 'app/textEditorsContainer'
 import ResultDisplay from 'app/resultDisplay'
 import { makeStyles } from 'makeStyles'; 
+import { useStore } from 'context/rootStore';
+import 'App.css'
+import { useEffect } from 'react';
+import useScreenSize from 'hooks/useScreenSize';
+import { observer } from 'mobx-react';
 
 const useStyles = makeStyles ()(() => ({
     root: {
@@ -15,19 +20,22 @@ const useStyles = makeStyles ()(() => ({
 }))
 
 
-import 'App.css'
-
 function App() {
 
   const { classes } = useStyles();
+  const screenSize = useScreenSize();
+  const { editorDimentions, updateScreenSize } = useStore().dimentsionsStore;
 
+  useEffect(() => {
+    updateScreenSize(screenSize)
+  },[screenSize])
 
   return (
       <div className = { classes.root }>
         <TextEditors/>
-        <ResultDisplay/>
+        { editorDimentions.showResult && <ResultDisplay/> }
       </div>
   )
 }
 
-export default App
+export default observer(App)
