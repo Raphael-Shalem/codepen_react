@@ -13,9 +13,13 @@ Responsive Design: Works on both desktop and mobile devices.
 ## **Tech Stack**
 
 Frontend: React, Vite
+
 State Management: MobX
+
 Styling: CSS Modules, MUI
+
 Syntax Highlighting: HighLight.js
+
 
 ## **Getting Started:**
 
