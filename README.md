@@ -4,6 +4,12 @@
 
 This project is a basic clone of CodePen.io, an online community for testing and showcasing user-created HTML, CSS, and JavaScript code snippets. The app allows users to create code snippets in real-time, providing a live preview of the output.
 
+## **Demo**
+
+You can view live version here:
+
+http://codepencopy.s3-website.us-east-2.amazonaws.com/
+
 ## **Features**
 
 HTML, CSS, and JavaScript Editors: Write and edit code in a user-friendly interface with syntax highlighting.
